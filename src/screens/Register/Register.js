@@ -68,7 +68,7 @@ const Register = ({ navigation }) => {
         throw new Error('Password does not meet requirements');
       }
 
-      const response = await fetch('http://192.168.1.217:5000/api/register', {
+      const response = await fetch('http://74.80.242.149:5000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -167,14 +167,17 @@ const Register = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#008080',
+    alignItems: 'center',
     padding: 20,
   },
   input: {
+    backgroundColor: 'white',
+    width: '100%',
+    marginVertical: 10,
+    padding: 10,
     borderWidth: 1,
     borderColor: 'gray',
-    padding: 10,
-    marginBottom: 10,
     borderRadius: 5,
   },
   requirementsList: {

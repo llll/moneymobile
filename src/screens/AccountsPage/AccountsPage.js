@@ -42,7 +42,7 @@ function Accounts({navigation}) {
         let objC = { "SearchKey": "C", "UserID": userData.ID };
         let jsC = JSON.stringify(objC);
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchCheckingAccounts', {
+            const response = await fetch('http://74.80.242.149:5000/api/searchCheckingAccounts', {
                 method: 'POST', body: jsC, headers: { 'Content-Type': 'application/json' }
             });
             let txt = await response.text();
@@ -59,7 +59,7 @@ function Accounts({navigation}) {
         let objS = { "SearchKey": "S", "UserID": userData.ID };
         let jsS = JSON.stringify(objS);
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchSavingsAccounts', {
+            const response = await fetch('http://74.80.242.149:5000/api/searchSavingsAccounts', {
                 method: 'POST', body: jsS, headers: { 'Content-Type': 'application/json' }
             });
             let txt = await response.text();
@@ -79,13 +79,13 @@ function Accounts({navigation}) {
             <Text style={styles.wb}>Welcome Back, {userData.FirstName}</Text>
             <Text style={styles.header}>Checking</Text>
             <View>
-                <Text>Account Type: {checkingName}</Text>
-                <Text>Amount: {checkingAmount}</Text>
+                <Text style={styles.generic}>Account Type: {checkingName}</Text>
+                <Text style={styles.generic}>Amount: {checkingAmount}</Text>
             </View>
             <Text style={styles.header}>Savings</Text>
             <View>
-                <Text>Account Type: {savingsName}</Text>
-                <Text>Amount: {savingsAmount}</Text>
+                <Text style={styles.generic} >Account Type: {savingsName}</Text>
+                <Text style={styles.generic}>Amount: {savingsAmount}</Text>
             </View>
             <CustomButton text="Transfer Money" onPress={() => navigation.navigate('Transfer',{ userData: userData })} />
             <CustomButton text="User Account" onPress={() => navigation.navigate('User Account',{ userData: userData })} />
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     header: {
+        color: "white",
         fontWeight: 'bold',
         fontSize: 18,
         marginTop: 20,
@@ -110,6 +111,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         marginTop: 0,
+    },
+    generic: {
+        color: "white",
+
     }
 });
 

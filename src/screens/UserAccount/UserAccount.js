@@ -33,7 +33,7 @@ function UserAccount() {
             const storedUserData = JSON.parse(await AsyncStorage.getItem('userData'));
             if (storedUserData && storedUserData.Username) {
                 try {
-                    const response = await fetch('http://192.168.1.217:5000/api/searchUsers', {
+                    const response = await fetch('http://74.80.242.149:5000/api/searchUsers', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -98,6 +98,7 @@ function UserAccount() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#008080',
         padding: 20,
     },
     profileContainer: {
@@ -107,10 +108,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#008080',
+        color: '#FFFFFF',
     },
     successMessage: {
-        backgroundColor: '#008080',
+        backgroundColor: '#FFFFFF',
         padding: 10,
         borderRadius: 5,
         marginBottom: 10,
@@ -133,31 +134,31 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         fontSize: 18,
         marginRight: 10,
-        color: '#008080',
+        color: '#FFFFFF',
         fontWeight: 'bold',
     },
     userName: {
         fontSize: 20,
-        color: '#008080',
+        color: '#FFFFFF',
         fontWeight: 'bold',
     },
     userDetail: {
-        color: '#008080',
+        color: '#FFFFFF',
     },
     sectionTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#008080',
+        color: '#FFFFFF',
         marginBottom: 10,
     },
     editButton: {
-        backgroundColor: '#008080',
+        backgroundColor: '#FFFFFF',
         marginTop: 10,
         padding: 10,
         borderRadius: 5,
     },
     editButtonText: {
-        color: '#FFFFFF',
+        color: '#008008',
         textAlign: 'center',
     },
 });

@@ -17,7 +17,7 @@ const Transfers = () => {
     let obj = { "UserID1": userData.ID, "UserID2": UserID2, "Money": transferAmount };
     let js = JSON.stringify(obj);
     try {
-      const response = await fetch('http://192.168.1.217:5000/api/transferMoney', {
+      const response = await fetch('http://74.80.242.149:5000/api/transferMoney', {
         method: 'POST', 
         body: js, 
         headers: {
@@ -38,7 +38,7 @@ const Transfers = () => {
     let js = JSON.stringify(obj);
     console.log(js);
     try {
-      const response = await fetch('http://192.168.1.217:5000/api/checkBalance', {
+      const response = await fetch('http://74.80.242.149:5000/api/checkBalance', {
         method: 'POST', 
         body: js, 
         headers: {
@@ -67,19 +67,21 @@ const Transfers = () => {
       <Text style={styles.wb}>Transfers</Text>
       <Text style={styles.header}>Target</Text>
       <TextInput
+        style={styles.generic}
         value={transferTarget}
         onChangeText={text => setTransferTarget(text)}
       />
-      <Text >Amount: $</Text>
+      <Text style={styles.generic}>Amount: $</Text>
       <TextInput
+        style={styles.generic}
         value={transferAmount}
         onChangeText={text => setTransferAmount(text)}
         keyboardType="numeric"
       />
       <CustomButton text="Send Money" onPress={(CheckTransferValidity)} />
       <Text style={styles.header}>Sent: ${transferAmount}</Text>
-      <Text>To: {transferTarget}</Text>
-      <Text>{balanceValid}</Text>
+      <Text style={styles.generic}>To: {transferTarget}</Text>
+      <Text style={styles.generic}>{balanceValid}</Text>
       {message ? <Text>{message}</Text> : null}
     </View>
   );
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontWeight: 'bold',
+        color: "white",
         fontSize: 18,
         marginTop: 20,
     },
@@ -102,7 +105,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         marginTop: 0,
+    },
+    generic: {
+      color: "white",
     }
+    //Add one for input
 });
 
 export default Transfers;

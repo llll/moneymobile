@@ -12,7 +12,7 @@ const LoginPage = ({navigation}) => {
         try {
           console.log('Sending request with data:', data);
 
-          const response = await fetch('http://192.168.1.217:5000/api/login', {
+          const response = await fetch('http://74.80.242.149:5000/api/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     input: {
-        
         backgroundColor: 'white',
         width: '100%',
         marginVertical: 10,

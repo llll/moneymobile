@@ -35,7 +35,7 @@ function EditProfile() {
 
     const fetchUserData = async (username) => {
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchUsers', {
+            const response = await fetch('http://74.80.242.149:5000/api/searchUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
