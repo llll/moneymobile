@@ -89,6 +89,7 @@ function Accounts({navigation}) {
             </View>
             <CustomButton text="Transfer Money" onPress={() => navigation.navigate('Transfer',{ userData: userData })} />
             <CustomButton text="User Account" onPress={() => navigation.navigate('User Account',{ userData: userData })} />
+            <CustomButton text="Transaction History" onPress={() => navigation.navigate('History',{ userData: userData })} />
         </View>
     );
 }

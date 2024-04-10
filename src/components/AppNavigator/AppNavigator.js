@@ -7,6 +7,7 @@ import EditProfile from '../../screens/EditUserPage/index.js'
 import UserAccount from '../../screens/UserAccount/index.js'
 import HomePage from '../../screens/Home/index.js'
 import RegisterPage from '../../screens/Register/index.js'
+import HistoryPage from '../../screens/HistoryPage/index.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function AppNavigator() {
       <Stack.Screen name="Transfer" component={TransferPage} />
       <Stack.Screen name="Edit Profile" component={EditProfile} />
       <Stack.Screen name="User Account" component={UserAccount} />
+      <Stack.Screen name="History" component={HistoryPage} />
     </Stack.Navigator>
   );
 }
