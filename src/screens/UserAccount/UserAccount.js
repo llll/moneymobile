@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert,Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'; // Assuming you're using react-navigation
 import { useIsFocused } from '@react-navigation/native';
@@ -33,7 +33,7 @@ function UserAccount() {
             const storedUserData = JSON.parse(await AsyncStorage.getItem('userData'));
             if (storedUserData && storedUserData.Username) {
                 try {
-                    const response = await fetch('http://192.168.1.217:5000/api/searchUsers', {
+                    const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/searchUsers', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -46,7 +46,14 @@ function UserAccount() {
                     }
 
                     const data = await response.json();
-                    setUserData(data[0]);
+                    const exactMatch = data.find(user => user.Username === storedUserData.Username);
+                    if (exactMatch) {
+                    setUserData(exactMatch);
+                    } else {
+                    // Handle the case where there is no exact match
+                    console.log('No exact match found');
+                    }
+                    console.log(exactMatch);
                 } catch (error) {
                     setError('Error fetching user data');
                     console.error(error);
@@ -98,19 +105,20 @@ function UserAccount() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#008080',
         padding: 20,
     },
     profileContainer: {
         flex: 1,
     },
     profileTitle: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#008080',
+        color: '#FFFFFF',
     },
     successMessage: {
-        backgroundColor: '#008080',
+        color: '#FFFFFF',
         padding: 10,
         borderRadius: 5,
         marginBottom: 10,
@@ -133,33 +141,37 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         fontSize: 18,
         marginRight: 10,
-        color: '#008080',
+        color: '#FFFFFF',
         fontWeight: 'bold',
     },
     userName: {
         fontSize: 20,
-        color: '#008080',
+        color: '#FFFFFF',
         fontWeight: 'bold',
     },
     userDetail: {
-        color: '#008080',
+        color: '#FFFFFF',
     },
     sectionTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#008080',
+        color: '#FFFFFF',
         marginBottom: 10,
     },
     editButton: {
-        backgroundColor: '#008080',
+        backgroundColor: '#FFFFFF',
         marginTop: 10,
         padding: 10,
         borderRadius: 5,
     },
     editButtonText: {
-        color: '#FFFFFF',
+        color: '#008008',
         textAlign: 'center',
     },
+    logo: {
+        width: 200,
+        height: 200,
+      },
 });
 
 export default UserAccount;

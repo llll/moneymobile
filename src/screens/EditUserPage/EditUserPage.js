@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-
-
+import CustomInput from '../../components/CustomInput/CustomInput';
+import CustomButton from '../../components/CustomButton';
 function EditProfile() {
     const [userData, setUserData] = useState(null);
     const [firstName, setFirstName] = useState('');
@@ -35,7 +35,7 @@ function EditProfile() {
 
     const fetchUserData = async (username) => {
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchUsers', {
+            const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/searchUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,11 +48,15 @@ function EditProfile() {
             }
 
             const data = await response.json();
-            if (data.length > 0) {
-                const user = data[0];
-                setPhoneNumber(user.PhoneNumber);
-                setEmail(user.Email);
+            const exactMatch = data.find(user => user.Username === username);
+            if (exactMatch) {
+                setPhoneNumber(exactMatch.PhoneNumber);
+                setEmail(exactMatch.Email);
+            } else {
+            // Handle the case where there is no exact match
+            console.log('No exact match found');
             }
+            console.log(exactMatch);
         } catch (error) {
             setError(error.message);
         }
@@ -64,7 +68,7 @@ function EditProfile() {
             // Assuming you update the user data in an API
 
             // After updating, save updated user data locally
-            const response = await fetch('http://192.168.1.217:5000/api/updateUser', {
+            const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/updateUser', {
                 method: 'PUT', // Change method to PUT for updating user
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,35 +105,38 @@ function EditProfile() {
             <Text style={styles.title}>Edit Profile</Text>
             {userData && (
                 <>
+                <Text style={styles.header}>First Name</Text>
                     <TextInput
                         value={firstName}
                         onChangeText={setFirstName}
                         placeholder="First Name"
-                        style={styles.input}
+                        style={styles.inputs}
                     />
+                    <Text style={styles.header}>Last Name</Text>
                     <TextInput
                         value={lastName}
                         onChangeText={setLastName}
                         placeholder="Last Name"
-                        style={styles.input}
+                        style={styles.inputs}
                     />
+                    <Text style={styles.header}>Phone Number</Text>
                     <TextInput
                         value={phoneNumber}
                         onChangeText={setPhoneNumber}
                         placeholder="Phone Number"
                         keyboardType="phone-pad"
-                        style={styles.input}
+                        style={styles.inputs}
                     />
+                    <Text style={styles.header}>Email</Text>
                     <TextInput
                         value={email}
                         onChangeText={setEmail}
                         placeholder="Email"
                         keyboardType="email-address"
-                        style={styles.input}
+                        style={styles.inputs}
                     />
-                    <Button title="Save" onPress={handleSave} />
-                    <Button title="Cancel" onPress={handleCancel} color="#CCCCCC" />
-                    {error ? <Text style={styles.error}>{error}</Text> : null}
+                    <CustomButton text="Save" onPress={handleSave} />
+                    <CustomButton text="Cancel" onPress={handleCancel} color="#CCCCCC" />
                 </>
             )}
         </View>
@@ -138,13 +145,15 @@ function EditProfile() {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#008080',
         flex: 1,
         padding: 10,
     },
     title: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         marginVertical: 10,
+        color:'white',
     },
     input: {
         height: 40,
@@ -155,6 +164,23 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginTop: 10,
+    },
+    inputs: {
+        backgroundColor: 'white',
+        width: '100%',
+
+        borderColor: '#e8e8e8',
+        borderWidth: 1,
+        borderRadius: 5,
+
+        paddingHorizontal:10,
+        paddingVertical:10,
+        marginVertical: 5,
+    },
+    header: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginTop: 20,
     },
 });
 

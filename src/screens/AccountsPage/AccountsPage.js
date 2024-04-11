@@ -42,13 +42,21 @@ function Accounts({navigation}) {
         let objC = { "SearchKey": "C", "UserID": userData.ID };
         let jsC = JSON.stringify(objC);
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchCheckingAccounts', {
+            const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/searchCheckingAccounts', {
                 method: 'POST', body: jsC, headers: { 'Content-Type': 'application/json' }
             });
             let txt = await response.text();
-            console.log(txt);
+            console.log("text " +txt);
             let res = JSON.parse(txt);
-            console.log(res);
+            console.log(txt.length);
+            if (txt.length == 2){
+                const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/createChecking', {
+                method: 'POST', 
+                body: JSON.stringify({UserID:userData.ID}), headers: { 'Content-Type': 'application/json' }
+                });
+                console.log(response.json)
+                loadAccounts(userData);
+            }
             setMessage('Checking Account Found');
             setCheckingName(res[0].AccountName);
             setCheckingAmount(res[0].AccountValue);
@@ -59,13 +67,21 @@ function Accounts({navigation}) {
         let objS = { "SearchKey": "S", "UserID": userData.ID };
         let jsS = JSON.stringify(objS);
         try {
-            const response = await fetch('http://192.168.1.217:5000/api/searchSavingsAccounts', {
+            const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/searchSavingsAccounts', {
                 method: 'POST', body: jsS, headers: { 'Content-Type': 'application/json' }
             });
             let txt = await response.text();
             console.log(txt);
             let res = JSON.parse(txt);
             console.log(res);
+            if (txt.length == 2){
+                const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/createSavings', {
+                method: 'POST', 
+                body: JSON.stringify({UserID:userData.ID}), headers: { 'Content-Type': 'application/json' }
+                });
+                console.log(response.json)
+                loadAccounts(userData);
+            }
             setMessage('Savings Account Found');
             setSavingsName(res[0].AccountName);
             setSavingsAmount(res[0].AccountValue);
@@ -77,18 +93,27 @@ function Accounts({navigation}) {
     return (
         <View style={styles.container}>
             <Text style={styles.wb}>Welcome Back, {userData.FirstName}</Text>
-            <Text style={styles.header}>Checking</Text>
+            <View style={styles.next}>
+            <View style={styles.roundedBox}>
+            <Text style={styles.header}>Checking Account</Text>
             <View>
-                <Text>Account Type: {checkingName}</Text>
-                <Text>Amount: {checkingAmount}</Text>
+                <Text style={styles.bal}>Balance: ${checkingAmount}</Text>
             </View>
-            <Text style={styles.header}>Savings</Text>
+            </View>
+            </View>
+            <View style={styles.next}>
+            <View style={styles.roundedBox}>
+            <Text style={styles.header}>Savings Account</Text>
             <View>
-                <Text>Account Type: {savingsName}</Text>
-                <Text>Amount: {savingsAmount}</Text>
+                <Text style={styles.bal}>Balance: ${savingsAmount}</Text>
             </View>
+            </View>
+            </View>
+            <View style={styles.next}>
+            <CustomButton text="View Transaction History" onPress={() => navigation.navigate('Transactions',{ userData: userData })} />
             <CustomButton text="Transfer Money" onPress={() => navigation.navigate('Transfer',{ userData: userData })} />
             <CustomButton text="User Account" onPress={() => navigation.navigate('User Account',{ userData: userData })} />
+            </View>
         </View>
     );
 }
@@ -97,20 +122,45 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#008080',
-        paddingTop: 50,
+        paddingTop: 30,
         padding: 20,
     },
+    next: {
+        backgroundColor: '#008080',
+        paddingTop: 20,
+        padding: 1,
+    },
     header: {
+        color: "white",
         fontWeight: 'bold',
         fontSize: 18,
-        marginTop: 20,
+        marginTop: 16,
+    },
+    bal: {
+        color: "white",
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginTop: 5,
     },
     wb: {
         color: "white",
         fontWeight: 'bold',
         fontSize: 30,
         marginTop: 0,
-    }
+    },
+    generic: {
+        color: "white",
+
+    },
+    roundedBox: {
+        width: "100%", // Set the width
+        height: 90, // Set the height
+        borderRadius: 20, // Apply border radius to create rounded corners
+        borderWidth: 3, // Set border width
+        borderColor: '#FFF', // Set border color
+        justifyContent: 'left', // Center content vertically
+        alignItems: 'center', // Center content horizontally
+      },
 });
 
 export default Accounts;

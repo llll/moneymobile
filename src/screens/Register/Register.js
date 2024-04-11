@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from '../../components/CustomButton';
 
 const Register = ({ navigation }) => {
   const [FirstName, setFirstName] = useState('');
@@ -67,8 +68,8 @@ const Register = ({ navigation }) => {
       if (passwordRequirements.length > 0) {
         throw new Error('Password does not meet requirements');
       }
-
-      const response = await fetch('http://192.168.1.217:5000/api/register', {
+      const lowerUsername = Username.toLowerCase();
+      const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const Register = ({ navigation }) => {
         body: JSON.stringify({
             FirstName,
             LastName,
-            Username,
+            Username: lowerUsername,
             PhoneNumber,
             Email,
             Password,
@@ -94,11 +95,13 @@ const Register = ({ navigation }) => {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Registration failed');
       }
-
-      await AsyncStorage.setItem('registrationSuccess', 'true');
-      Alert.alert('Success', 'Registration successful', [
-        { text: 'OK', onPress: () => navigation.navigate('Login') }
-      ]);
+      else if (response.ok){
+        console.log(response.json());
+        await AsyncStorage.setItem('registrationSuccess', 'true');
+        Alert.alert('Success', 'Registration successful', [
+          { text: 'OK', onPress: () => navigation.navigate('EmailVer', {username:lowerUsername}) }
+        ]);
+      }
     } catch (error) {
       Alert.alert('Registration Error', error.message);
     }
@@ -159,20 +162,21 @@ const Register = ({ navigation }) => {
         secureTextEntry
       />
       {!passwordMatch && <Text style={styles.errorText}>Passwords do not match</Text>}
-      <Button title="Register" onPress={doRegister} />
+      <CustomButton text="Register" onPress={doRegister} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#008080',
     flex: 1,
-    justifyContent: 'center',
     padding: 20,
   },
   input: {
     borderWidth: 1,
     borderColor: 'gray',
+    backgroundColor: 'white',
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
