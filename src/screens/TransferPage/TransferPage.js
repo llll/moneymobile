@@ -70,48 +70,128 @@ const Transfers = () => {
   };
 
   const CheckTransferValidity = async () => {
-    console.log("here2 " + userData.ID);
-    let obj = { "AccountType":"Checking", "UserID": userData.ID };
-    let js = JSON.stringify(obj);
-    console.log(js);
-    try {
-      const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/checkBalance', {
-        method: 'POST', 
-        body: js, 
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log(response);
-      let txt = await response.text();
-      let res = JSON.parse(txt);
-      console.log(res.balance);
-      if (transferAmount <= res.balance){
-        setBalanceValid('True');
-        console.log('valid');
-        CompleteTransfer();
-      } else {
-        Alert.alert('Transfer Error', "You Do Not Have Enough Money In Your Checking Account");
-        setBalanceValid('False')
-        console.log('invalid');
-      } 
-    } catch (e) {
-      setMessage(e.toString());
+    if (transferAmount > 0){
+      console.log("here2 " + userData.ID);
+      let obj = { "AccountType":"Checking", "UserID": userData.ID };
+      let js = JSON.stringify(obj);
+      console.log(js);
+      try {
+        const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/checkBalance', {
+          method: 'POST', 
+          body: js, 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log(response);
+        let txt = await response.text();
+        let res = JSON.parse(txt);
+        console.log(res.balance);
+        if (transferAmount <= res.balance){
+          setBalanceValid('True');
+          console.log('valid');
+          CompleteTransfer();
+        } else {
+          Alert.alert('Transfer Error', "You Do Not Have Enough Money In Your Checking Account");
+          setBalanceValid('False')
+          console.log('invalid');
+        } 
+      } catch (e) {
+        setMessage(e.toString());
+      }
+    }
+    else{
+      Alert.alert('Transfer Error', "Please Enter an Amount > $0");
     }
   };
 
   const TransferUser = async () => {
-    let obj = JSON.stringify({ "UserID": userData.ID, "Type": transferAccountType, "Money": transferAmount });
-    const res = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/transferMoneyAccount', {
-      method: 'POST',
-      body: obj,
-      headers: {
-        'Content-Type': 'application/json'
+    if (transferAmount > 0){
+      if (transferAccountType == 1){
+        console.log("here2 " + userData.ID);
+        let obj = { "AccountType":"Checking", "UserID": userData.ID };
+        let js = JSON.stringify(obj);
+        console.log(js);
+        try {
+          const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/checkBalance', {
+            method: 'POST', 
+            body: js, 
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log(response);
+          let txt = await response.text();
+          let res = JSON.parse(txt);
+          console.log(res.balance);
+          if (transferAmount <= res.balance){
+            setBalanceValid('True');
+            console.log('valid');
+            let obj = JSON.stringify({ "UserID": userData.ID, "Type": transferAccountType, "Money": transferAmount });
+            const res = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/transferMoneyAccount', {
+              method: 'POST',
+              body: obj,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            console.log("test");
+            if (res) {
+                Alert.alert("Account Transfer Complete");
+            }
+          } else {
+            Alert.alert('Transfer Error', "You Do Not Have Enough Money In Your Account");
+            setBalanceValid('False')
+            console.log('invalid');
+          } 
+        } catch (e) {
+          setMessage(e.toString());
+        }
       }
-    });
-    console.log("test");
-    if (res) {
-        Alert.alert("Account Transfer Complete");
+      else if (transferAccountType == 2){
+        console.log("here2 " + userData.ID);
+        let obj = { "AccountType":"Savings", "UserID": userData.ID };
+        let js = JSON.stringify(obj);
+        console.log(js);
+        try {
+          const response = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/checkBalance', {
+            method: 'POST', 
+            body: js, 
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log(response);
+          let txt = await response.text();
+          let res = JSON.parse(txt);
+          console.log(res.balance);
+          if (transferAmount <= res.balance){
+            setBalanceValid('True');
+            console.log('valid');
+            let obj = JSON.stringify({ "UserID": userData.ID, "Type": transferAccountType, "Money": transferAmount });
+            const res = await fetch('https://moneymaster22-267f3a958fc3.herokuapp.com/api/transferMoneyAccount', {
+              method: 'POST',
+              body: obj,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            console.log("test");
+            if (res) {
+                Alert.alert("Account Transfer Complete");
+            }
+          } else {
+            Alert.alert('Transfer Error', "You Do Not Have Enough Money In Your Account");
+            setBalanceValid('False')
+            console.log('invalid');
+          } 
+        } catch (e) {
+          setMessage(e.toString());
+        }
+      }
+    }
+    else{
+      Alert.alert('Transfer Error', "Please Enter an Amount > $0");
     }
   };
 
