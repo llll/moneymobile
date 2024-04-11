@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet, Alert} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Alert, Image} from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const Home = ({navigation}) => {
     
     
     return (
         <View style={styles.root}>
+            <Image source={require('../logo.png')} style={styles.logo} />
             <Text style={styles.titleText}>Money</Text>
             <Text style={styles.titleText}>Master</Text>
-            <CustomButton text="Login" onPress={() => navigation.navigate('Login')} />
-            <CustomButton text="Register" onPress={() => navigation.navigate('Register')} />
+            <CustomButton testID="loginButton" text="Login" onPress={() => navigation.navigate('Login')} />
+            <CustomButton testID="registerButton" text="Register" onPress={() => navigation.navigate('Register')} />
         </View>
     );
 }
@@ -27,9 +27,12 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 75,
         fontWeight: 'bold',
-        fontFamily: 'Cochin',
         color: 'white'
     },
+    logo: {
+        width: 200,
+        height: 200,
+      },
     input: {
         
         backgroundColor: 'white',
